@@ -22,7 +22,7 @@ X（Twitter）：https://x.com/0x515151
 ## 📦 安裝方式（一鍵安裝）
 1. 安裝瀏覽器外掛 **Tampermonkey**  
 https://chromewebstore.google.com/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo?utm_source=item-share-cb
-       （支援 Chrome / Edge / Brave）
+       （支援 Chrome / Edge / Brave　請完成串改猴基本前置作業）
 
 
 3. 點擊以下連結即可安裝腳本：
@@ -30,7 +30,8 @@ https://chromewebstore.google.com/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo?utm_so
 👉 **安裝連結：**  
 https://raw.githubusercontent.com/happycooper406-collab51/TradeGenius-AutoPilot/main/tradegenius-autopilot.user.js
 
-3. 打開支援的交易頁面
+3. 打開支援的交易頁面　https://www.tradegenius.com/trade
+
 4. 於右下角控制面板點擊 **Start** 即可啟動
 
 ---

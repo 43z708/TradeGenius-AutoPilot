@@ -424,7 +424,7 @@
       const symbol = symbolEl?.innerText?.trim();
 
       if (symbol === targetToken) {
-        UI.logSwap('找到 ' + symbol + '，尝试选择 BNB 链...');
+        UI.logSwap('找到 ' + symbol + '，尝试选择 Solana 链...');
 
         row.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
         await sleep(SWAP_CONFIG.waitForHover);
@@ -434,9 +434,9 @@
           const chainOptions = chainMenu.querySelectorAll('.cursor-pointer');
           for (const opt of chainOptions) {
             const chainName = opt.querySelector('span')?.innerText?.trim();
-            if (chainName === 'BNB' || chainName === 'Binance') {
+            if (chainName === 'Solana' || chainName === 'SOL') {
               opt.click();
-              UI.logSwap('✅ Receive 选择了 ' + symbol + ' (BNB链)');
+              UI.logSwap('✅ Receive 选择了 ' + symbol + ' (Solana链)');
               return true;
             }
           }

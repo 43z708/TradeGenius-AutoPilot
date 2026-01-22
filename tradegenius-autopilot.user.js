@@ -370,11 +370,11 @@
       const symbolEl = row.querySelector('.text-xs.text-genius-cream\\/60');
       const symbol = symbolEl?.innerText?.trim();
 
-      if (symbol === 'USDT' || symbol === 'USDC') {
-        const balanceText = row.querySelector('.flex.flex-nowrap.justify-end')?.innerText || '';
-        const balanceMatch = balanceText.match(/[\d,\.]+/);
+      if (symbol === 'USDC' | symbol === 'ETH') {
+        const balanceText = row.querySelector('.flex.items-center.justify-end')?.innerText || '';
+        const balanceMatch = balanceText.match(/\$\s*([\d,\.]+)/);
         if (balanceMatch) {
-          const balance = parseFloat(balanceMatch[0].replace(/,/g, ''));
+          const balance = parseFloat(balanceMatch[1].replace(/,/g, ''));
           UI.logSwap('发现 ' + symbol + ': ' + balance);
           if (balance > maxBalance) {
             maxBalance = balance;
@@ -399,21 +399,37 @@
   async function selectReceiveToken() {
     await sleep(SWAP_CONFIG.waitAfterChoose);
 
-    const targetToken = selectedFromToken === 'USDT' ? 'USDC' : 'USDT';
+    const targetToken = selectedFromToken === 'USDC' ? 'ETH' : 'USDC';
     UI.logSwap('From 是 ' + selectedFromToken + '，Receive 选择 ' + targetToken);
 
     const tabs = document.querySelectorAll('[role="dialog"] .flex.flex-row.gap-3 > div');
-    let stableTab = null;
-    tabs.forEach(tab => {
-      if (tab.innerText.trim().toLowerCase() === 'stable') stableTab = tab;
-    });
 
-    if (stableTab) {
-      stableTab.click();
-      UI.logSwap("点击 Stable 标签");
-      await sleep(SWAP_CONFIG.waitAfterTabClick);
+    if (targetToken === 'USDC') {
+      let stableTab = null;
+      tabs.forEach(tab => {
+        if (tab.innerText.trim().toLowerCase() === 'stable') stableTab = tab;
+      });
+
+      if (stableTab) {
+        stableTab.click();
+        UI.logSwap("点击 Stable 标签");
+        await sleep(SWAP_CONFIG.waitAfterTabClick);
+      } else {
+        UI.logSwap("未找到 Stable 标签，尝试直接选择");
+      }
     } else {
-      UI.logSwap("未找到 Stable 标签，尝试直接选择");
+      let gasTab = null;
+      tabs.forEach(tab => {
+        if (tab.innerText.trim().toLowerCase() === 'Gas') gasTab = tab;
+      });
+
+      if (gasTab) {
+        gasTab.click();
+        UI.logSwap("点击 Gas 标签");
+        await sleep(SWAP_CONFIG.waitAfterTabClick);
+      } else {
+        UI.logSwap("未找到 Gas 标签，尝试直接选择");
+      }
     }
 
     await sleep(300);
@@ -424,7 +440,7 @@
       const symbol = symbolEl?.innerText?.trim();
 
       if (symbol === targetToken) {
-        UI.logSwap('找到 ' + symbol + '，尝试选择 Solana 链...');
+        UI.logSwap('找到 ' + symbol + '，尝试选择 Base 链...');
 
         row.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
         await sleep(SWAP_CONFIG.waitForHover);
@@ -434,9 +450,9 @@
           const chainOptions = chainMenu.querySelectorAll('.cursor-pointer');
           for (const opt of chainOptions) {
             const chainName = opt.querySelector('span')?.innerText?.trim();
-            if (chainName === 'Solana' || chainName === 'SOL') {
+            if (chainName === 'Base') {
               opt.click();
-              UI.logSwap('✅ Receive 选择了 ' + symbol + ' (Solana链)');
+              UI.logSwap('✅ Receive 选择了 ' + symbol + ' (Base链)');
               return true;
             }
           }
@@ -462,7 +478,7 @@
     localStorage.setItem(SWAP_CONFIG.KEY_SWAP_ENABLED, '1');
     UI.setSwapRunning(true);
 
-    UI.logSwap('🚀 Bot started. 区间: ' + (SWAP_CONFIG.waitRandomMin/1000) + 's - ' + (SWAP_CONFIG.waitRandomMax/1000) + 's');
+    UI.logSwap('🚀 Bot started. 区间: ' + (SWAP_CONFIG.waitRandomMin / 1000) + 's - ' + (SWAP_CONFIG.waitRandomMax / 1000) + 's');
 
     await sleep(SWAP_CONFIG.waitBeforeStart);
 
